@@ -1,0 +1,110 @@
+<XmlLayout xmlns="http://www.w3schools.com"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="UI/XmlLayout/Configuration/XmlLayout.xsd">
+
+    <!-- STYLE -->
+    <Defaults>
+
+        <Text class="title" alignment="MiddleCenter" color="white" fontSize="40" font="Arial" fontStyle="Bold" />
+        <Text class="subtitle" alignment="MiddleCenter" color="rgb(0.2,0.2,0.2)" fontSize="35" font="Arial"  fontStyle="Bold" />
+        <Text class="h1" font="Arial Bold" fontSize="48" color="black"/>
+        <Text class="h2" font="Arial Bold" fontSize="32" color="rgb(0,0,0)" />
+        <Text class="h3" font="Arial Bold" fontSize="24" color="black"/>
+        <Text color="#111111" fontSize="40" alignment="MiddleLeft" font="Arial"/>
+
+        <TableLayout class="noCellBackground" cellBackgroundColor="clear" />
+
+        <Row class="headerRow" dontUseTableRowBackground="true" color="rgb(0.4,0.6,0.6)" preferredHeight="64" />
+        <Row class="subHeaderRow" dontUseTableRowBackground="true" color="rgb(0.5,0.8,0.8)" preferredHeight="64" />
+        <Row class="sectionHeaderRow" dontUseTableRowBackground="true" color="rgb(1,1,1)" preferredHeight="26" />
+        <Row class="viewport"  dontUseTableRowBackground="true" color="rgb(1,1,1)" />
+
+        <Button font="Arial Bold" colors="rgb(0.4,0.4,0.4)|rgb(0.2,0.2,0)|rgb(0.2,0.2,0)" textColor="rgb(0.3,0.7,0.7)" textShadow="rgba(0,0,0,0)" padding="5" fontSize="40" />
+        <Button class="disabled" colors="rgb(0.1,0.4,0)|rgb(0.1,0.4,0)|rgb(0.1,0.4,0)|rgb(0.1,0.4,0)" textColor="rgb(0,0.5,0)" interactable="false" />
+        <Button class="submit" colors="rgb(0.1,0.4,0)|rgb(0.1,0.4,0)|rgb(0.1,0.4,0)" textColor="rgb(0,0.5,0)" />
+
+        <ToggleButton
+                   font="Arial Bold"
+                   image="Sprites/Layout/Button"
+                   colors="rgb(0.2,0.7,0)|rgb(0.2,0.9,0)|rgb(0.2,0.9,0)"
+                   textColors="rgb(0,0.75,0)|rgb(1,1,0)|rgb(1,1,0)"
+                   deselectedBackgroundColor="rgb(0.1,0.6,0)"
+                   deselectedIconColor="rgb(0.5,0.5,0)"
+                   selectedBackgroundColor="rgb(0.2,0.7,0)"
+                   selectedIconColor="rgb(1,1,0)"
+                   textShadow="rgba(0,0,0,0.5)" />
+
+        <VerticalScrollView class="scrollView" height="250"
+                   color="rgb(0.05,0.05,0.05,0.5)"
+                                 
+                   image="Sprites/Layout/Base"
+                   movementType="Clamped"
+                   scrollSensitivity="15"
+                   scrollbarBackgroundColor="rgb(1,0.1,0)"
+                   scrollbarColors="rgba(0.2,0.6,0,0.8)|rgb(0.2,0.7,0)|rgb(0.2,0.7,0)|rgb(0.2,0.6,0)"
+                   scrollbarImage="Sprites/Layout/Scrollbar" />
+
+        <HorizontalScrollView class="scrollView"
+                   color="rgb(0.05,0.05,0.05,0.5)"
+                   image="Sprites/Layout/Base"
+                   movementType="Clamped"
+                   scrollSensitivity="15"
+                   scrollbarBackgroundColor="rgb(0.05,0.1,0)"
+                   scrollbarColors="rgba(0.2,0.6,0,0.8)|rgb(0.2,0.7,0)|rgb(0.2,0.7,0)|rgb(0.2,0.6,0)"
+                   scrollbarImage="Sprites/Layout/Scrollbar" />
+
+        <Tooltip tooltipBorderColor="rgb(1,1,1)" tooltipTextColor="rgb(1,1,1)" />
+
+        <!-- Hover Styles (new in v1.21) -->
+        <Slider fillColor="rgb(0.9,0.9,0.9)" handleColor="rgb(0.9,0.9,0.9)" hoverClass="hover" />
+        <Slider class="hover" fillColor="rgb(1,1,1)" handleColor="rgb(1,1,1)" />
+
+        <Dropdown colors="rgb(0.9,0.9,0.9)|rgb(1,1,1)" fontSize="40" dropdownHeight="800" itemHeight="150" height="120" checkSize="50" checkImagePreserveAspect="true" textColor="black" hoverClass="hover" resizeTextForBestFit="true" preferredHeight="40" />
+        <Dropdown class="hover" textColor="rgb(0,0,0)" />
+
+        <Toggle colors="rgb(0.9,0.9,0.9)|rgb(1,1,1)|rgb(0.9,0.9,0.9)" toggleWidth="45" toggleHeight="45" />
+
+        <InputField colors="rgb(0.9,0.9,0.9)|rgb(1,1,1)|rgb(0.9,0.9,0.9)" textColor="rgb(0.3,0.3,0.3)" hoverClass="hover" fontSize="40" textAlignment="MiddleLeft" />
+        <InputField class="hover" textColor="rgb(0,0,0)" />
+
+        <Button hoverClass="hover" />
+        <Button class="hover" textColor="rgb(1,1,0)" />
+
+    </Defaults>
+           
+           <!-- STRUCTURE -->
+           <TableLayout class="noCellBackground" width="1300" height="500">
+                      <Row class="viewport">
+                                <Cell dontUseTableCellBackground="true">
+                                           
+                                 <TableLayout class="outlined"  padding="1" cellPadding="10" columnWidths="1000" shadow="black">
+                                 
+                                 <Row class="headerRow" preferredHeight="100">
+                                            <Cell>
+                                                       <Text class="title">Add profile</Text>        
+                                            </Cell>
+                                     <Cell maxWidth="20">
+                                         <Button onClick="cancelAddProfileBt();">cancel</Button>
+                                     </Cell>
+                                 </Row>
+                                 <Row >
+                                            <Cell columnSpan="2">
+                                                       <Text class="label">Enter name for profile and press okay. Don't forget to save after editing the values!</Text>        
+                                            </Cell>
+                                 </Row>
+                                 <Row >
+                                            <Cell>
+                                                       <InputField id="profileNameInput">profile name</InputField>  
+                                            </Cell>
+                                            <Cell>
+                                                       <Button onClick="addProfileBt();">Add</Button>  
+                                            </Cell>
+                                 </Row>
+                                 
+                                 </TableLayout>
+                                           
+                                 </Cell>
+                      </Row>
+           </TableLayout>
+           
+</XmlLayout>
