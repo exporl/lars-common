@@ -1,0 +1,336 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Lars
+{
+    /// <summary>
+    /// Monobehaviour wrapper for serialized profiles-list
+    /// Exposes addUser and getActive
+    /// getActive().getDirectoryName() can be used to access user-specific settings & results
+    /// </summary>
+    public class UserProfileManager : ManagerHelper
+    {
+        public static UserProfileManager instance = null;
+
+        public UserProfileContainer users = new UserProfileContainer();
+
+        public const string userProfilePath = "/data/userprofiles.xml";
+
+        public UserProfile ActiveUser
+        {
+            get
+            {
+                if (users == null)
+                {
+                    InitializeProfiles();
+                }
+
+                return users.getActive();
+            }
+        }
+
+        // Use this for initialization
+        void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+
+            DontDestroyOnLoad(gameObject);
+
+            loadProfiles();
+
+            if(users == null)
+            {
+                InitializeProfiles();
+            }
+        }
+
+        void Start()
+        {
+            propagateUserValues();
+        }
+
+        private void InitializeProfiles()
+        {
+            users = new UserProfileContainer();
+            users.firstInit();
+            saveUserProfiles();
+        }
+
+        [EditorButton]
+        public void addUser(string name, bool recheck = false)//, string famname)
+        {
+            users.addUser(name, recheck);
+            saveUserProfiles();
+
+            propagateUserValues();
+        }
+
+        public void setActive(int id)
+        {
+            users.setActive(id);
+            propagateUserValues();
+        }
+
+        public void propagateUserValues()
+        {
+            //name
+            uiController.setProfileName(ActiveUser.FullName);
+
+            //scores
+            uiController.SetBestText(userProfiles.bestScore);
+            uiController.SetLastText(userProfiles.lastScore);
+
+            //progress
+            //progress.calculateProgress();
+        }
+
+        public void saveUserProfiles()
+        {
+            Utils.saveToXml<UserProfileContainer>(users, userProfilePath);
+        }
+
+        private void loadProfiles()
+        {
+            users = Utils.loadFromXml<UserProfileContainer>(userProfilePath, null);
+        }
+
+
+        // Current user properties - easy get/set for active user profile
+
+        public bool sawTutorial
+        {
+            set
+            {
+                ActiveUser.seenTutorial = true;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.seenTutorial;
+            }
+        }
+
+        /*
+        public bool seenLittleBlockTut
+        {
+            set
+            {
+                ActiveUser.seenLittleBlockTut = true;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.seenLittleBlockTut;
+            }
+        }
+        
+        public bool achievedBonus
+        {
+            set
+            {
+                ActiveUser.achievedBonusLife = true;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.achievedBonusLife;
+            }
+        }
+        */
+
+        public int startScore
+        {
+            set
+            {
+                ActiveUser.startScore = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.startScore;
+            }
+        }
+
+        public int bestScore
+        {
+            set
+            {
+                ActiveUser.bestScore = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.bestScore;
+            }
+        }
+
+        public int lastScore
+        {
+            set
+            {
+                ActiveUser.lastScore = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.lastScore;
+            }
+        }
+
+        public int totalGames
+        {
+            set
+            {
+                ActiveUser.totalGames = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.totalGames;
+            }
+        }
+
+        /*
+        public string selectedColor
+        {
+            set
+            {
+                ActiveUser.selectedColor = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.selectedColor;
+            }
+        }
+        */
+
+        public string selectedChar
+        {
+            set
+            {
+                ActiveUser.selectedCharacter = value;
+                saveUserProfiles();
+            }
+            get
+            {
+                return ActiveUser.selectedCharacter;
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class UserProfileContainer
+    {
+        public List<UserProfile> list = new List<UserProfile>();
+        public int activeUser;
+
+        public UserProfileContainer()
+        {
+        }
+
+        public void firstInit()
+        {
+            addUser("Guest");
+        }
+
+        public void addUser(string name, bool recheck = false, bool setActive = true)//string famname, bool setActive = true)
+        {
+            UserProfile newProfile = new UserProfile();
+            newProfile.init(list.Count, name, recheck);
+
+            list.Add(newProfile);
+
+            if (setActive)
+                activeUser = newProfile.id;
+        }
+
+        public void setActive(UserProfile prof)
+        {
+            activeUser = prof.id;
+        }
+
+        public void setActive(int profid)
+        {
+            activeUser = profid;
+        }
+
+        public UserProfile getActive()
+        {
+            return list[activeUser];
+        }
+    }
+
+    [System.Serializable]
+    public class UserProfile
+    {
+        public int id;
+        public string name;
+        public string familyName;
+        public bool retest;
+
+        public int startScore;
+        public int bestScore;
+        public int lastScore;
+        public int totalGames;
+
+        public bool seenTutorial;
+
+        public string selectedCharacter;
+
+        public UserProfile()
+        {
+        }
+
+        public void init(int i, string n, bool rt)
+        {
+            id = i;
+            name = n;
+            retest = rt;
+            //familyName = fn;
+        }
+
+        public string FullName
+        {
+            get
+            {
+                return name;
+            }
+        }
+
+        public string DirectoryName
+        {
+            get
+            {
+                return "/" + id + "_" + name + "/";
+            }
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return name + "_retest_" + retest.ToString();
+            }
+        }
+
+        public bool isGuest()
+        {
+            return (id == 0);
+        }
+
+        public void sawTutorial()
+        {
+            seenTutorial = true;
+        }
+    }
+}

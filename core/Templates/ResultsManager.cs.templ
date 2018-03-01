@@ -1,0 +1,340 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System;
+using Lars.Pirates;
+
+namespace Lars
+{
+    //TODO make this more generic
+    public class ResultsManager : ManagerHelper
+    {
+        public static ResultsManager instance = null;
+
+        bool recording = false;
+
+        /// <summary>
+        /// This object contains general info, settings & list of records (per game-procedure) and will be serialized into XML
+        /// </summary>
+        public PirateResults procedureResults = new PirateResults();
+
+        //  Reference to the current Trial being recorded
+        //private TowerTrialResult currentTrialResult;
+
+        [SerializeField]
+        GameObject resultsViewer;
+
+        [SerializeField]
+        PlotResults plotter;
+
+        void Awake()
+        {
+
+            if (instance == null)
+            {
+                instance = this;
+            }
+
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+
+            DontDestroyOnLoad(gameObject);
+        }
+
+        void Start()
+        {
+            if(plotter == null)
+            {
+                plotter = resultsViewer.GetComponentInChildren<PlotResults>();
+            }
+        }
+
+        public void init()
+        {
+            procedureResults.init(userProfiles.ActiveUser.FullName, userProfiles.ActiveUser.retest);
+        }
+
+        /*
+        public TowerTrialResult getCurrentRecord()
+        {
+            return currentTrialResult;
+        }
+
+        public void startRecording(int startScore = 0)
+        {
+            if (recording) return;
+
+            Debug.Log("START PROCEDURE RECORDING");
+
+            recording = true;
+            procedureResults = new TowerResultsFile();
+            TowerSettingsData tsd = levelSettings.getSettingsData();
+            procedureResults.init(tsd, gameManager.GameName, userProfiles.ActiveUser.FullName);
+        }
+
+        public void addRecord(TowerTrialResult r)
+        {
+            if (!recording) return;
+
+            Debug.Log("ADD RECORDING");
+
+            procedureResults.listResults.Add(r);
+        }
+
+        public void startTrialRecord()
+        {
+            if (!recording)
+            {
+                startRecording();
+            }
+
+            Debug.Log("START TRIAL RECORDING");
+
+            currentTrialResult = new TowerTrialResult(levelSettings.data.brick.movement.duration);
+            currentTrialResult.id = procedureResults.listResults.Count;
+            //currentTrialResult.setStart();
+        }
+
+        public void stopTrialRecord(System.DateTime now)
+        {
+            if (!recording) return;
+
+            Debug.Log("STOP TRIAL RECORDING");
+
+            currentTrialResult.setEnd(now);
+            currentTrialResult.setPassovers();
+        }
+
+        public void addCurrentRecord()
+        {
+            if (!recording) return;
+
+            Debug.Log("ADD CURRENT RECORDING");
+
+            addRecord(currentTrialResult);
+        }
+
+        public void stopRecording()
+        {
+            if (!recording) return;
+
+            Debug.Log("STOP RECORDING");
+
+            recording = false;
+            procedureResults.generalInfo.finish();
+            saveToXML();
+        }
+
+        // used for getting rid of results from tutorial
+        public void discardRecordings()
+        {
+            if (!recording) return;
+
+            recording = false;
+            procedureResults = null;
+            currentTrialResult = null;
+        }
+        */
+
+        public void setNumberTestAnswers(List<NumberTestAnswer> ans)
+        {
+            procedureResults.numberTestAnswers = ans;
+        }
+
+        public void setTrainingAnswers(List<Answer> ans)
+        {
+            procedureResults.trainingAnswers = ans;
+        }
+
+        public void setAnswers(Side side, List<Answer> ans)
+        {
+            if(side == Side.Left)
+                procedureResults.leftAnswers = ans;
+            else
+                procedureResults.rightAnswers = ans;
+        }
+
+        public void setStatus(string status)
+        {
+            procedureResults.general_info.status = status;
+        }
+
+        public void endRecording()
+        {
+            procedureResults.general_info.finish();
+            string name = "/results" + userProfiles.ActiveUser.DirectoryName + "result_" + userProfiles.ActiveUser.FileName + "_" + userProfiles.totalGames.ToString("D4") + ".xml";
+            saveToXML(name);
+        }
+
+        public void TemporarySave()
+        {
+            string name = "/results/temp" + userProfiles.ActiveUser.DirectoryName + "result_" + userProfiles.ActiveUser.FileName + "_tempsave" + ".xml";
+            saveToXML(name);
+        }
+
+        // Save
+        void saveToXML(string name)
+        {
+            //string name = "/results" + userProfiles.ActiveUser.DirectoryName + "result_" + userProfiles.totalGames.ToString("D4") + ".xml";
+            
+            Utils.saveToXml<PirateResults>(procedureResults, name);
+        }
+
+        // Load
+        private PirateResults loadResults()
+        {
+            string name = "/results" + userProfiles.ActiveUser.DirectoryName + "result_" + userProfiles.ActiveUser.FileName + "_" + userProfiles.totalGames.ToString("D4") + ".xml";
+            Debug.Log("Loading results from: " + name);
+
+            return Utils.loadFromXml<PirateResults>(name, null);
+        }
+
+        public void enableViewer(bool on)
+        {
+            resultsViewer.SetActive(on);
+        }
+
+        public void showPostGameResults()
+        {
+            resultsViewer.SetActive(true);
+
+            plotter.PreparePlot();
+            plotter.DrawPlot(procedureResults);
+        }
+
+        [EditorButton]
+        public void showLoadedResults()
+        {
+            resultsViewer.SetActive(true);
+
+            PirateResults res = loadResults();
+
+            if (res != null)
+            {
+                plotter.PreparePlot();
+                plotter.DrawPlot(res);
+            }
+            else
+            {
+                uiController.showWarning("Could not find resultsfile");
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class ResultInfo
+    {
+        [XmlElement("subject")]
+        public string subjectName;
+        public bool retest = false;
+
+        private System.DateTime startDt;
+        public string startdate;
+        private System.DateTime endDt;
+        public string enddate;
+        [XmlElement(Type = typeof(Duration))]
+        public Duration duration;
+
+        public string version;
+
+        public string status = "normal";
+
+        
+
+        public ResultInfo()
+        {
+        }
+
+        public void init(string subject, bool rt)
+        {
+            subjectName = subject;
+            retest = rt; 
+
+            startDt = System.DateTime.Now;
+            startdate = startDt.ToString("yyyy-MM-ddTHH:mm:ss");
+            duration = new Duration();
+            duration.setStart(startDt);
+
+            version = Lars.Utils.version;
+        }
+
+        public void finish()
+        {
+            endDt = System.DateTime.Now;
+            enddate = endDt.ToString("yyyy-MM-ddTHH:mm:ss");
+            duration.setEnd(endDt);
+            duration.setDuration("seconds");
+        }
+    }
+
+    [System.Serializable]
+    public class Duration
+    {
+        private System.DateTime start, end, pauseStart;
+        private double pausedTime;
+        private bool isPaused;
+
+        [XmlAttribute]
+        public string unit = "";
+        [XmlText]
+        public double duration = 0;
+
+        public Duration()
+        {
+        }
+
+        public void setStart(System.DateTime st) { start = st; }
+
+        public void setEnd(System.DateTime en) { end = en; }
+
+        public void setDuration(string tUnit)
+        {
+            unit = tUnit;
+
+            duration = (end - start).TotalSeconds;
+            duration -= pausedTime;
+
+            if (unit == "milliseconds")
+            {
+                duration *= 1000;
+            }
+        }
+
+        public void pause()
+        {
+            if (isPaused)
+            {
+                Debug.Log("Duration record is already paused");
+            }
+            else
+            {
+                isPaused = true;
+                pauseStart = System.DateTime.Now;
+            }
+        }
+
+        public void resume()
+        {
+            if (!isPaused)
+            {
+                Debug.Log("Duration record wasn't paused when trying to resume");
+            }
+            else
+            {
+                pausedTime += (System.DateTime.Now - pauseStart).TotalSeconds;
+                isPaused = false;
+            }
+        }
+    }
+
+
+
+
+}

@@ -1,0 +1,181 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Lars.Pirates;
+using Lars.UI;
+using Lars.Sound;
+using Lars.Pirates.Settings;
+
+namespace Lars
+{
+    /// <summary>
+    /// A helper to avoid duplicate code
+    /// </summary>
+    public abstract class ManagerHelper : MonoBehaviour
+    {
+        //  persistent 
+      
+        private PirateSceneManager _global;
+        public PirateSceneManager global
+        {
+            get
+            {
+                if (_global == null)
+                    _global = FindObjectOfType<PirateSceneManager>();
+
+                return _global;
+            }
+        }
+        
+
+        private UIController _uiController;
+        public UIController uiController
+        {
+            get
+            {
+                _uiController = FindObjectOfType<UIController>();
+
+                return _uiController;
+            }
+        }
+
+        
+        private PirateSettings _config;
+        public PirateSettings config
+        {
+            get
+            {
+                if (_config == null)
+                    _config = FindObjectOfType<PirateSettings>();
+
+                return _config;
+            }
+        }
+        
+
+        private SpinSoundManager _soundManager;
+        public SpinSoundManager soundManager
+        {
+            get
+            {
+                if (_soundManager == null)
+                    _soundManager = FindObjectOfType<SpinSoundManager>();
+                return _soundManager;
+            }
+        }
+
+        private CalibrationManager _calibManager;
+        public CalibrationManager calibManager
+        {
+            get
+            {
+                if (_calibManager == null)
+                    _calibManager = FindObjectOfType<CalibrationManager>();
+                return _calibManager;
+            }
+        }
+        
+        private ResultsManager _resManager;
+        public ResultsManager results
+        {
+            get
+            {
+                if (_resManager == null)
+                    _resManager = FindObjectOfType<ResultsManager>();
+                return _resManager;
+            }
+        }
+
+        private UserProfileManager _userProfiles;
+        public UserProfileManager userProfiles
+        {
+            get
+            {
+                if (_userProfiles == null)
+                    _userProfiles = FindObjectOfType<UserProfileManager>();
+                return _userProfiles;
+            }
+        }
+
+        private CharacterManager _charManager;
+        public CharacterManager charManager
+        {
+            get
+            {
+                if (_charManager == null)
+                    _charManager = FindObjectOfType<CharacterManager>();
+                return _charManager;
+            }
+        }
+
+        /*
+        private ProgressManager _progress;
+        public ProgressManager progress
+        {
+            get
+            {
+                if (_progress == null)
+                    _progress = FindObjectOfType<ProgressManager>();
+                return _progress;
+            }
+        }
+        */
+
+        // non-persistent
+
+        private PirateGameManager _gameManager;
+        public PirateGameManager gameManager
+        {
+            get
+            {
+                if (_gameManager == null)
+                    _gameManager = FindObjectOfType<PirateGameManager>();
+
+                return _gameManager;
+            }
+            set
+            {
+                _gameManager = value;
+            }
+        }
+
+        private ChestManager _chestManager;
+        public ChestManager chestManager
+        {
+            get
+            {
+                if (_chestManager == null)
+                    _chestManager = FindObjectOfType<ChestManager>();
+
+                return _chestManager;
+            }
+            set
+            {
+                _chestManager = value;
+            }
+        }
+
+        private CharacterSetter _charSet;
+        public CharacterSetter characterSetter
+        {
+            get
+            {
+                if (_charSet == null)
+                    _charSet = FindObjectOfType<CharacterSetter>();
+                return _charSet;
+            }
+        }
+
+        private TestManager _testManager;
+        public TestManager testManager
+        {
+            get
+            {
+                if (_testManager == null)
+                    _testManager = FindObjectOfType<TestManager>();
+                return _testManager;
+            }
+        }
+    }
+
+}
