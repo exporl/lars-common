@@ -6,74 +6,29 @@ using DG.Tweening;
 using System;
 using Visc;
 
-namespace Lars.Tower
+namespace Lars
 {
 
-    public class TutorialController : TutorialBase
+    public class TutorialController : ManagerHelper
     {
-        public TonyMover tony;
         public Image panel;
         public Text txt;
 
-        public Image downArrow, cubeArrow, livesArrow;
+        public Image tapIcon;
+        private Vector3 tapStartPos;
+        private Tweener tapTween;
 
-        public TrafficLightController trafficLight;
+        public List<ScenarioWrapper> scenarioList;
+        public Scenario currentScenario;
 
-        void Awake()
-        {
-        }
+        protected Dictionary<string, Action> callbacks = new Dictionary<string, Action>();
+        
 
         // Use this for initialization
-        public override void Start()
+        public virtual void Start()
         {
-            base.Start();
-
-            // hide all tutorial UI graphics
-            Graphic[] inv = new Graphic[] 
-                { tapIcon, panel, txt, downArrow, cubeArrow, livesArrow };
-            Color c; 
-            foreach (Graphic g in inv)
-            {
-                c = g.color;
-                c.a = 0;
-                g.color = c;
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-        
-        [EditorButton]
-        public void TonyExplain(string s, bool doSound = false, bool autoFade = false)
-        {
-            txt.text = s;
-
-            tony.UpTony();
-
-            //fade in
-            txt.DOFade(1, .5f);
-            panel.DOFade(1, .3f).OnComplete(()=> 
-            {
-                if(doSound)
-                    soundManager.PlaySoundEffect("talk");
-            });
-
-            if(autoFade)
-            {
-                DOVirtual.DelayedCall(3, HideTony);
-            }
-        }
-
-        public void HideTony()
-        {
-            tony.DownTony();
-
-            //fade out
-            txt.DOFade(0, .7f);
-            panel.DOFade(0, .7f);
+            if(tapIcon != null)
+                tapStartPos = tapIcon.GetComponent<RectTransform>().position;
         }
 
         public void BlinkImage(Image img, int loops = -1)
@@ -82,31 +37,117 @@ namespace Lars.Tower
                               .SetEase(Ease.Linear)
                               .SetLoops(loops, LoopType.Yoyo);
         }
-
-        public void StopBlinkArrow(Image img)
+        
+        public void StopBlinkImage(Image img)
         {
             img.DOKill(true);
             img.color = new Color(1, 1, 1, 0);
         }
 
-        public void BlinkDownArrow(int loops = -1)
+        public void setCallback(string key, Action cb)
         {
-            BlinkImage(downArrow, loops);
+            callbacks.Add(key, cb);
         }
 
-        public void BlinkCubeArrow(int loops = -1)
+        [EditorButton]
+        public void doCallback(string key)
         {
-            BlinkImage(cubeArrow, loops);
+            if (callbacks.ContainsKey(key))
+            {
+                callbacks[key]();
+            }
+            else
+            {
+                Debug.Log("CallbackEvent key does not exist");
+            }
         }
 
-        public void BlinkLivesArrow(int loops = -1)
+        public Scenario getScenario(string nm)
         {
-            BlinkImage(livesArrow, loops);
+            if (!scenarioList.Exists(x => x.name == nm)) return null;
+            return scenarioList.Find(x => x.name == nm).scenario;
         }
 
+        [EditorButton]
+        public void StartTutorial(string name, Action callback)
+        {
+            if (currentScenario == null) return;
+
+            currentScenario.Execute(callback);
+        }
+
+        public void StartWait(bool showIcon, bool tapAnywhere, Action callback)
+        {
+            // start coroutine that listens for tap
+            StartCoroutine(WaitForTap(callback));
+
+            if (!tapAnywhere)
+                tapIcon.rectTransform.position = tapStartPos;
+
+            // tapicon blink
+            if (showIcon)
+                tapTween = tapIcon.DOFade(.5f, .7f)
+                                  .SetEase(Ease.Linear)
+                                  .SetLoops(-1, LoopType.Yoyo)
+                                  .OnStepComplete(() =>
+                                  {
+                                      if (!tapAnywhere) return;
+
+                                      if (tapTween.CompletedLoops() % 2 == 0)
+                                      {
+                                          Vector3 newPos = new Vector3(UnityEngine.Random.Range(100, Screen.currentResolution.width / 2 - 100),
+                                                                        UnityEngine.Random.Range(100, Screen.currentResolution.height / 2 - 100));
+
+                                          while (Vector3.Distance(tapIcon.rectTransform.position, newPos) < 400)
+                                          {
+                                              newPos.x = UnityEngine.Random.Range(100, Screen.currentResolution.width / 2 - 100);
+                                              newPos.y = UnityEngine.Random.Range(100, Screen.currentResolution.height / 2 - 100);
+                                          }
+
+                                          tapIcon.rectTransform.position = newPos;
+                                      }
+                                  });
+        }
+
+        private void StopWait()
+        {
+            StopCoroutine("WaitForTap");
+        }
+
+        private IEnumerator WaitForTap(Action callback)
+        {
+            while (true)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //resume scenario
+                    callback();
+
+                    //remove blinking tapicon
+                    tapTween.Kill(false);
+
+                    Color c = tapIcon.color;
+                    c.a = 0;
+                    tapIcon.color = c;
+
+                    StopWait();
+                }
+
+                yield return 0;
+            }
+        }
         
+        
+
     }
 
-    
+    [System.Serializable]
+    public class ScenarioWrapper
+    {
+        public string name;
+        public Scenario scenario;
+        [Tooltip("Is this a tutorial that runs parallel with ingame mechanics?")]
+        public bool inGame;
+    }
 
 }

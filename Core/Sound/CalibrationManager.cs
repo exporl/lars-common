@@ -11,11 +11,11 @@ using Lars.UI;
 namespace Lars.Sound
 {
 
-    public class CalibrationManager : ManagerHelper
+    public abstract class CalibrationManager : ManagerHelper
     {
         public static CalibrationManager instance = null;
 
-        AudioSource calibPlayer;
+        internal AudioSource calibPlayer;
 
         public CalibrationData calibData = new CalibrationData();
         bool dataLoaded;
@@ -46,34 +46,19 @@ namespace Lars.Sound
         void Start()
         {
             //  Calibration profile exists? Apply it
-            if (!loadData())
+            if (!LoadData())
             {
                 uiController.showWarning("No calibration profile found");
             }
             else
             {
-                applyCalibration();
-            }
-        }
-
-        void OnAudioFilterRead(float[] data, int channels)
-        {
-            for (int i = 0; i < data.Length; i = i + channels)
-            {
-                if (!calibrateLeft)
-                {
-                    data[i + (int)Channel.Left] = 0;
-                }
-                else
-                {
-                    data[i + (int)Channel.Right] = 0;
-                }
+                ApplyCalibration();
             }
         }
 
         public CalibrationData getData()
         {
-            if (!dataLoaded) loadData();
+            if (!dataLoaded) LoadData();
             return calibData;
         }
 
@@ -89,22 +74,22 @@ namespace Lars.Sound
         /// Show calibrationpanel
         /// </summary>
         /// <param name="s"></param>
-        public void showPanel(bool s)
+        public void ShowPanel(bool s)
         {
             calibPanel.SetActive(s);
 
             if (s)
             {
-                soundManager.StopLocSoundInsta();
+                //soundManager.StopAllSounds();
             }
             else
             {
-                stopCalibration();
-                applyCalibration();
+                StopCalibration();
+                ApplyCalibration();
             }
         }
 
-        private Button getButton(bool max, bool left)
+        internal Button GetButton(bool max, bool left)
         {
             string t = max ? "play" : "test";
             string s = left ? "left" : "right";
@@ -116,39 +101,9 @@ namespace Lars.Sound
 
         #region Calibration
 
-        bool calibrating, calibrateLeft;
-        public void StartCalibration(bool max, Channel chan)
-        {
-            //  Max = play at full volume, else play at target vol
-            string txt = max ? "Play" : "Test";
-            string[] dir = new string[2] { " L", " R" };
+        internal bool calibrating, calibrateLeft;
 
-            calibrateLeft = (chan == Channel.Left);
-
-            if (!calibrating)
-            {
-                calibPlayer.Play();
-                calibPlayer.volume = max ? 1 : Utils.DecibelToLinear(getCalibrationDiff(chan));
-
-                calibrating = true;
-
-                // Button color
-                getButton(max, calibrateLeft).GetComponent<Image>().color = Color.red;
-                getButton(max, calibrateLeft).GetComponentInChildren<Text>().text = "Stop";
-
-            }
-            else
-            {
-                calibPlayer.Stop();
-
-                calibrating = false;
-
-                // Button color
-                getButton(max, calibrateLeft).GetComponent<Image>().color = Color.grey;
-                getButton(max, calibrateLeft).GetComponentInChildren<Text>().text = txt + dir[(int)chan];
-
-            }
-        }
+        public abstract void StartCalibration(bool max, Channel chan);
 
         /// <summary>
         /// Plays calib player at max output
@@ -171,7 +126,7 @@ namespace Lars.Sound
         /// <summary>
         /// Stop calib player, checks if values are correct
         /// </summary>
-        public void stopCalibration()
+        public void StopCalibration()
         {
             calibPlayer.Stop();
             dataLoaded = true;
@@ -181,18 +136,14 @@ namespace Lars.Sound
         /// Set calibplayer level with buttons
         /// </summary>
         /// <param name="dB"></param>
-        public void setLevel(int dB)
-        {
-            calibPlayer.Play();
-            calibPlayer.volume = Sound.Utils.DecibelToLinear(dB);
-        }
+        public abstract void SetLevel(int dB);
 
         /// <summary>
         /// Pass values to SoundManager
         /// </summary>
-        public void applyCalibration()
+        public void ApplyCalibration()
         {
-            if (!dataLoaded) loadData();
+            if (!dataLoaded) LoadData();
 
             if (calibData.measuredAtMax_L < calibData.targetLevel || calibData.measuredAtMax_R < calibData.targetLevel)
             {
@@ -200,8 +151,13 @@ namespace Lars.Sound
                 return;
             }
 
-            soundManager.SetCalibration(getCalibrationDiff(Channel.Left), Channel.Left);
-            soundManager.SetCalibration(getCalibrationDiff(Channel.Right), Channel.Right);
+            Debug.Log("LEFT difference is: " + GetCalibrationDiff(Channel.Left) + "which is: " + Utils.DecibelToLinear(GetCalibrationDiff(Channel.Left)));
+            Debug.Log("RIGHT difference is: " + GetCalibrationDiff(Channel.Right) + "which is: " + Utils.DecibelToLinear(GetCalibrationDiff(Channel.Right)));
+
+            soundManager.SetCalibration(GetCalibrationDiff(Channel.Left), Channel.Left);
+            soundManager.SetCalibration(GetCalibrationDiff(Channel.Right), Channel.Right);
+
+            soundManager.PrepareNoise();
         }
 
         /// <summary>
@@ -209,9 +165,9 @@ namespace Lars.Sound
         /// </summary>
         /// <param name="chan"></param>
         /// <returns></returns>
-        public float getCalibrationDiff(Channel chan)
+        public float GetCalibrationDiff(Channel chan)
         {
-            if (!dataLoaded) loadData();
+            if (!dataLoaded) LoadData();
 
             float diff;
 
@@ -234,9 +190,9 @@ namespace Lars.Sound
 
         #region IO
 
-        public void saveData()
+        public void SaveData()
         {
-            applyCalibration();
+            ApplyCalibration();
 
             XmlSerializer serializer = new XmlSerializer(typeof(CalibrationData));
 
@@ -253,7 +209,7 @@ namespace Lars.Sound
             }
         }
 
-        public bool loadData()
+        public bool LoadData()
         {
             try
             {

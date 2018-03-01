@@ -15,7 +15,7 @@ namespace Lars
         {
             get { return "NOT_IMPLEMENTED"; }
         }
-
+        
         public int level;
 
         /// <summary>
@@ -23,6 +23,7 @@ namespace Lars
         /// virtualScore is what score would be if every answer was correct
         /// </summary>
         int _score = 0;
+        [SerializeField]
         protected int virtualScore;
 
         /// <summary>
@@ -47,9 +48,6 @@ namespace Lars
         }
 
         protected bool isGameOver = false;
-        protected bool paused;
-
-        public bool isPaused { get { return paused; } }
 
         protected virtual void Awake()
         {
@@ -84,10 +82,15 @@ namespace Lars
         { }
 
         /// <summary>
+        /// Used for restarting the game after gameover
+        /// </summary>
+        public virtual void DoRestart() { }
+
+        /// <summary>
         /// Override this with base.DoStart() at the beginning
         /// Starts game logic, coroutines, ...
         /// </summary>
-        public virtual void DoStart()
+        public virtual void DoStartProcedure()
         {
             if (!isGameOver)
             {
@@ -96,7 +99,7 @@ namespace Lars
 
                 calibManager.applyCalibration();
 
-                ApplySettings();
+                applySettings();
 
                 StartCoroutine("_DoStart");
 
@@ -111,57 +114,27 @@ namespace Lars
                 yield return 0;
             }
         }
+        
+        protected bool paused;
+        
+        public bool isPaused { get { return paused;} }
 
-        public abstract void PauseGame();
-        public void ForcePause() {
+        public virtual void PauseGame(bool tutorial = false) 
+        { 
             DOTween.PauseAll();
             paused = true;
-            if(results.getCurrentRecord() != null)
-                results.getCurrentRecord().pause();
         }
 
-        public abstract void ResumeGame();
-        public void ForceResume() {
+        public virtual void ResumeGame(bool tutorial = false) 
+        {
             DOTween.PlayAll();
             paused = false;
-            if(results.getCurrentRecord() != null)
-                results.getCurrentRecord().resume();
         }
-
+        
         /// <summary>
         /// Called at beginning of game to make sure all settings are applied
         /// </summary>
         protected abstract void ApplySettings();
-
-        public bool isOver { get { return isGameOver; } }
-
-        public virtual void DOGameOver(bool forced = false) {
-            if(isGameOver)
-                return;
-
-            results.stopRecording();
-
-            if(score > userProfiles.GetTopScore(level))
-                userProfiles.SetTopScore(level, score);
-
-            userProfiles.SetLastScore(level, score);
-
-            uiController.SetBestText(userProfiles.GetTopScore(level));
-            uiController.SetLastText(userProfiles.GetLastScore(level));
-            uiController.SetGameOverText(score);
-
-            isGameOver = true;
-
-            StopAllCoroutines();
-
-            // actual end of game stuff (as opposed to exit button)
-            if(!forced) {
-                uiController.ShowGameOver();
-                soundManager.PlaySoundEffect("gameover");
-            }
-
-            soundManager.StopLocSound();
-        }
 
     }
 

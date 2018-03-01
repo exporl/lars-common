@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Lars.Sound
 {
-
+    [RequireComponent(typeof(AudioListener))]
     public class WavRecorder : FilterBase
     {
         #region Fields, Properties, and Inner Classes
@@ -23,6 +23,8 @@ namespace Lars.Sound
         // used to manage the length of recording
         private int counter, maxCount;
         private float recDuration;
+
+        string fileName;
 
         AudioSource audioSource;
 
@@ -139,10 +141,12 @@ namespace Lars.Sound
                 return;
             }
             setRecordingDuration(dur);
-            audioSource.Stop();
+            //audioSource.Stop();
             Clear();
-            audioSource.Play();
+            //audioSource.Play();
             isRecording = true;
+
+            fileName = testName;
         }
 
         /// <summary>
@@ -151,7 +155,7 @@ namespace Lars.Sound
         private void stopRecording()
         {
             isRecording = false;
-            Save("testresult/filtered_audio.wav");
+            Save("TestResults/" + fileName + ".wav");
         }
         #endregion
 

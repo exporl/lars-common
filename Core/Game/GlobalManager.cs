@@ -22,7 +22,7 @@ namespace Lars
         void Awake()
         {
             if (Time.timeSinceLevelLoad < 1)
-                DOTween.Init(null,null,LogBehaviour.ErrorsOnly);
+                DOTween.Init();
 
             if (instance == null)
             {
@@ -37,7 +37,7 @@ namespace Lars
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += InitializeScene;
         }
-
+        
         void InitializeScene(Scene scene, LoadSceneMode mode) 
         {
             //resetHelper();
@@ -46,19 +46,12 @@ namespace Lars
                 Invoke("InitializeForReal", 0.1f);
             }    
         }
-
-        private void InitializeForReal() {
+        
+        private virtual void InitializeForReal() 
+        {
             DOScreenBlurToUnblur();
-
             userProfiles.SaveUserProfiles();
-
-            if(gameManager != null) {
-                if(userProfiles.ActiveUser.seenTutorial)
-                    gameManager.DoStart();
-                else
-                    gameManager.DoStartTutorial();
-            }
-        }
+         }
 
         public void LoadScene(string name)
         {
@@ -68,9 +61,18 @@ namespace Lars
                    .OnComplete(() => { SceneManager.LoadSceneAsync(name); });
         }
 
+        public void LoadScene(int id)
+        {
+            DOScreenUnblurToBlur();
+            float f = 1;
+            DOTween.To(() => f, x => f = x, 0, 1.2f)
+                   .OnComplete(() => { SceneManager.LoadSceneAsync(sceneList[id]); });
+        }
+
         public void RetryGame()
         {
-            Lars.Utils.ReloadLevel();
+            Utils.ReloadLevel();
+            gameManager.DoRestart();
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace Lars
         /// </summary>
         public Image blurImage;
 
-        public void SetBlurAlpha(float alpha)
+        private void SetBlurAlpha(float alpha)
         {
             Color c = blurImage.color;
             c.a = alpha;

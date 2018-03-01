@@ -6,7 +6,7 @@ using System;
 
 namespace Lars.Sound
 {
-    public enum Channel { Left, Right };
+    public enum Channel { Left, Right, Both };
 
     public class SoundManager : ManagerHelper
     {
@@ -18,9 +18,7 @@ namespace Lars.Sound
         public AudioSource soundEffectPlayer;
         public AudioSource backgroundMusicPlayer;
 
-        public AudioSource speechPlayer;
-        
-        private SoundLibrary soundLib;
+        internal SoundLibrary soundLib;
 
         /// <summary>
         /// Target loudness in levelsettings (real world dB)
@@ -30,7 +28,7 @@ namespace Lars.Sound
         /// <summary>
         /// Target loudness property in linear scale
         /// </summary>
-        private float volumeLinear
+        protected double volumeLinear
         {
             get
             {
@@ -67,121 +65,17 @@ namespace Lars.Sound
 
             DontDestroyOnLoad(gameObject);
 
-            locPlayer = GetComponent<AudioSource>();
+            //locPlayer = GetComponent<AudioSource>();
 
-            soundLib = GetComponent<SoundLibrary>(); 
+            soundLib = GetComponent<SoundLibrary>();
+        }
+        
+        void LateUpdate()
+        {
+            
         }
 
         #endregion
-
-
-        #region Localization
-
-        private AudioSource locPlayer;
-
-        /// <summary>
-        /// Global calibration & stimulus level
-        /// See Unity documentation on OnAudioFilterRead for more info
-        /// </summary>
-        /// <param name="data">One block of samples (both channels, interleaved)</param>
-        void OnAudioFilterRead(float[] data, int channels)
-        {
-            for (int i = 0; i < data.Length; i = i + channels)
-            {
-                data[i + (int)Channel.Left] = data[i + (int)Channel.Left] * GetCalibLIN(Channel.Left) * volumeLinear;
-                data[i + (int)Channel.Right] = data[i + (int)Channel.Right] * GetCalibLIN(Channel.Right) * volumeLinear;
-            }
-        }
-
-        /// <summary>
-        /// Calls play on & fades in locPlayer sound
-        /// </summary>
-        public void StartLocSound(float duration = 3)
-        {
-            if (locPlayer.isPlaying) return;
-
-            locPlayer.volume = 0;
-            locPlayer.Play();
-            locPlayer.DOFade(1, duration);
-        }
-
-        /// <summary>
-        /// Fades out and stops locPlayer
-        /// </summary>
-        /// <param name="duration">(Optional) Duration of fadeout, default is 3, 0 is insta</param>
-        public void StopLocSound(float duration = 3)
-        {
-            if (duration == 0)
-            {
-                locPlayer.volume = 0;
-                locPlayer.Stop();
-            }
-            else
-            {
-                locPlayer.DOFade(0, duration).OnComplete(() => { locPlayer.Stop(); });
-            }
-        }
-
-        /// <summary>
-        /// Instantly stops locPlayer
-        /// </summary>
-        public void StopLocSoundInsta()
-        {
-            locPlayer.volume = 0;
-            locPlayer.Stop();
-        }
-
-        /// <summary>
-        /// Fade in sound ( no .play() )
-        /// </summary>
-        public void FadeInLocSound()
-        {
-            //TODO create decibel fader
-            locPlayer.DOFade(1, 2.0f);
-        }
-
-        /// <summary>
-        /// Fade out sound ( no .stop() )
-        /// </summary>
-        public void FadeOutLocSound()
-        {
-            //todo seem
-            locPlayer.DOFade(0.3f, 1.0f);
-        }
-
-        /// <summary>
-        /// Set LOC stimulus (by clip)
-        /// </summary>
-        /// <param name="clip">UnityEngine audioclip</param>
-        public void SetLocStimulus(AudioClip clip)
-        {
-            locPlayer.clip = clip;
-            locPlayer.Play();
-        }
-
-        /// <summary>
-        /// Set loudness of stimulus in 'real world dB'
-        /// (Not the same as calibration level)
-        /// </summary>
-        /// <param name="db"></param>
-        public void SetLocLevel(float db)
-        {
-            float calculation = 0;//db - CalibrationManager.instance.calibData.targetLevel;//todo
-            targetVolume = calculation;
-        }
-
-        public void ResumeLoc()
-        {
-            locPlayer.UnPause();
-        }
-
-        public void PauseLoc()
-        {
-            locPlayer.Pause();
-        }
-
-        #endregion
-
 
         #region Calibration
 
@@ -190,15 +84,17 @@ namespace Lars.Sound
         /// </summary>
         /// <param name="db">loudness in dB</param>
         /// <param name="chan">channel</param>
-        public void SetCalibration(float db, Channel chan)
+        public virtual void SetCalibration(float db, Channel chan)
         {
-            if (db > 0) db = 0;
+            //if (db > 0) db = 0;
             if (chan == Channel.Left)
             {
+                Debug.Log("Setting vol to: " + db);
                 targetCalib_L = db;
             }
             else
             {
+                Debug.Log("Setting vol to: " + db);
                 targetCalib_R = db;
             }
         }
@@ -208,7 +104,7 @@ namespace Lars.Sound
         /// </summary>
         /// <param name="chan"></param>
         /// <returns></returns>
-        private float GetCalibDB(Channel chan)
+        protected float GetCalibDB(Channel chan)
         {
             if (chan == Channel.Left)
                 return targetCalib_L;
@@ -221,7 +117,7 @@ namespace Lars.Sound
         /// </summary>
         /// <param name="chan"></param>
         /// <returns></returns>
-        private float GetCalibLIN(Channel chan)
+        protected double GetCalibLIN(Channel chan)
         {
             if (chan == Channel.Left)
                 return Utils.DecibelToLinear(targetCalib_L);
@@ -247,13 +143,13 @@ namespace Lars.Sound
         }
 
         #endregion
-
+        
         public void PlaySpeech(string speechName, float vol = 0)
         {
             AudioClip clip = soundLib.getSpeechClip(speechName);
             if (clip != null)
                 speechPlayer.PlayOneShot(clip);
         }
-
+        
     }
 }
