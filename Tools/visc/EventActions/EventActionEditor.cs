@@ -34,7 +34,7 @@ namespace Visc
 		{
 			if (_currentAction != null)
 			{
-				if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.Return)
+				if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
 				{
 					if(!Application.isPlaying)
 						EditorSceneManager.MarkAllScenesDirty();

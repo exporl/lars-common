@@ -85,7 +85,7 @@ namespace Visc
                     Repaint();
                 }
 
-                if (Event.current.type == EventType.ScrollWheel && Event.current.type == EventType.keyDown)
+                if (Event.current.type == EventType.ScrollWheel && Event.current.type == EventType.KeyDown)
                 {
 
                     CurrentScenario.VisibleScale = CurrentScenario.VisibleScale + (Mathf.Sign(Event.current.delta.y) * 0.1f);
