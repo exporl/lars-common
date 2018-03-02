@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Text;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -19,9 +20,41 @@ namespace Lars
     /// </summary>
     public static class Utils
     {
-        public static string version = "alpha";
+        public static string version = "alpha"; // TODO make automatic link with commit hash
 
         private static System.Random Random = new System.Random();
+
+        public static T[][] CopyArrayLinq<T>(T[][] source)
+        {
+            return source.Select(s => s.ToArray()).ToArray();
+        }
+
+        public static void Shuffle<T>(T[] array)
+        {
+            System.Random rng = new System.Random();
+            int n = array.Length;
+            while (n > 1)
+            {
+                int k = rng.Next(n--);
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+        }
+
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            System.Random rng = new System.Random();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
 
         public static float RandomRange(float min, float max)
         {
@@ -99,23 +132,6 @@ namespace Lars
         }
 
         /// <summary>
-        /// General playerPrefs accessors
-        /// </summary>
-        /*
-        public static string subjectName
-        {
-            set
-            {
-                PlayerPrefs.SetString("Tower.General.SUBJECT_NAME", value);
-            }
-            get
-            {
-                return PlayerPrefs.GetString("Tower.General.SUBJECT_NAME");
-            }
-        }
-        */
-
-        /// <summary>
         /// Sanitizes string to generate valid filename
         /// </summary>
         /// <param name="name"></param>
@@ -140,6 +156,8 @@ namespace Lars
                 GameObject.Destroy(root.GetChild(i).gameObject);
             }
         }
+
+        #region File I/O
 
         /// <summary>
         /// Generic XML saver
@@ -199,6 +217,8 @@ namespace Lars
 
             return (T)result;
         }
+
+        #endregion
     }
 }
 
