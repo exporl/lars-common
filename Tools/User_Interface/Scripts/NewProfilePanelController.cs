@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UI.Xml;
 using UnityEngine.UI;
-using Lars.Tower.Settings;
 
 class NewProfilePanelController : XmlLayoutController
 {
