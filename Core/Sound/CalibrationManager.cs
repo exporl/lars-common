@@ -48,7 +48,7 @@ namespace Lars.Sound
             //  Calibration profile exists? Apply it
             if (!LoadData())
             {
-                uiController.showWarning("No calibration profile found");
+                uiController.ShowWarning("No calibration profile found");
             }
             else
             {
@@ -147,7 +147,7 @@ namespace Lars.Sound
 
             if (calibData.measuredAtMax_L < calibData.targetLevel || calibData.measuredAtMax_R < calibData.targetLevel)
             {
-                uiController.showWarning("Target value should not be greater than measured value");
+                uiController.ShowWarning("Target value should not be greater than measured value");
                 return;
             }
 
