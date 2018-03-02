@@ -136,9 +136,6 @@ namespace Lars
                 yield return 0;
             }
         }
-        
-        
-
     }
 
     [System.Serializable]

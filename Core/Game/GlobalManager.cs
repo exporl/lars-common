@@ -47,7 +47,7 @@ namespace Lars
             }    
         }
         
-        private virtual void InitializeForReal() 
+        protected virtual void InitializeForReal() 
         {
             DOScreenBlurToUnblur();
             userProfiles.SaveUserProfiles();

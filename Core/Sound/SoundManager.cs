@@ -23,12 +23,12 @@ namespace Lars.Sound
         /// <summary>
         /// Target loudness in levelsettings (real world dB)
         /// </summary>
-        private float targetVolume = 0;
+        protected float targetVolume = 0;
 
         /// <summary>
         /// Target loudness property in linear scale
         /// </summary>
-        protected double volumeLinear
+        protected float volumeLinear
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Lars.Sound
         
         #region Methods
 
-        void Awake()
+        protected virtual void Awake()
         {
 
             if (instance == null)
@@ -64,9 +64,6 @@ namespace Lars.Sound
             }
 
             DontDestroyOnLoad(gameObject);
-
-            //locPlayer = GetComponent<AudioSource>();
-
             soundLib = GetComponent<SoundLibrary>();
         }
         
@@ -117,7 +114,7 @@ namespace Lars.Sound
         /// </summary>
         /// <param name="chan"></param>
         /// <returns></returns>
-        protected double GetCalibLIN(Channel chan)
+        protected float GetCalibLIN(Channel chan)
         {
             if (chan == Channel.Left)
                 return Utils.DecibelToLinear(targetCalib_L);
@@ -143,7 +140,8 @@ namespace Lars.Sound
         }
 
         #endregion
-        
+
+        public AudioSource speechPlayer;
         public void PlaySpeech(string speechName, float vol = 0)
         {
             AudioClip clip = soundLib.getSpeechClip(speechName);

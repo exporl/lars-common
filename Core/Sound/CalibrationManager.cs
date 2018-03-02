@@ -15,7 +15,7 @@ namespace Lars.Sound
     {
         public static CalibrationManager instance = null;
 
-        internal AudioSource calibPlayer;
+        protected AudioSource calibPlayer;
 
         public CalibrationData calibData = new CalibrationData();
         bool dataLoaded;
@@ -56,7 +56,7 @@ namespace Lars.Sound
             }
         }
 
-        public CalibrationData getData()
+        public CalibrationData GetData()
         {
             if (!dataLoaded) LoadData();
             return calibData;
@@ -89,7 +89,7 @@ namespace Lars.Sound
             }
         }
 
-        internal Button GetButton(bool max, bool left)
+        protected Button GetButton(bool max, bool left)
         {
             string t = max ? "play" : "test";
             string s = left ? "left" : "right";
@@ -101,7 +101,7 @@ namespace Lars.Sound
 
         #region Calibration
 
-        internal bool calibrating, calibrateLeft;
+        protected bool calibrating, calibrateLeft;
 
         public abstract void StartCalibration(bool max, Channel chan);
 
@@ -157,7 +157,7 @@ namespace Lars.Sound
             soundManager.SetCalibration(GetCalibrationDiff(Channel.Left), Channel.Left);
             soundManager.SetCalibration(GetCalibrationDiff(Channel.Right), Channel.Right);
 
-            soundManager.PrepareNoise();
+            //soundManager.PrepareNoise();
         }
 
         /// <summary>

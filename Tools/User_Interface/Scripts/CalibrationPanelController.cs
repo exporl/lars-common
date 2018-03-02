@@ -33,47 +33,47 @@ namespace Lars.UI
 
         protected override void PrepopulateViewModelData()
         {
-            loadViewModelData();
+            LoadViewModelData();
         }
 
-        void loadViewModelData()
+        void LoadViewModelData()
         {
-            viewModel.setData(calibMgr.getData());
+            viewModel.SetData(calibMgr.GetData());
         }
 
-        void playLeft()
+        void PlayLeft()
         {
             calibMgr.PlayMaxCalibration(Channel.Left);
         }
 
-        void playRight()
+        void PlayRight()
         {
             calibMgr.PlayMaxCalibration(Channel.Right);
         }
 
-        void testLeft()
+        void TestLeft()
         {
             calibMgr.PlayTestCalibration(Channel.Left);
         }
 
-        void testRight()
+        void TestRight()
         {
             calibMgr.PlayTestCalibration(Channel.Right);
         }
 
-        void saveQuit()
+        void SaveQuit()
         {
-            calibMgr.saveData();
+            calibMgr.SaveData();
 
-            calibMgr.showPanel(false);
+            calibMgr.ShowPanel(false);
         }
 
-        void discardQuit()
+        void DiscardQuit()
         {
-            calibMgr.loadData();
-            loadViewModelData();
+            calibMgr.LoadData();
+            LoadViewModelData();
 
-            calibMgr.showPanel(false);
+            calibMgr.ShowPanel(false);
         }
     }
 
@@ -81,14 +81,14 @@ namespace Lars.UI
     {
         CalibrationData calibData = new CalibrationData();
 
-        public void setData(CalibrationData cd)
+        public void SetData(CalibrationData cd)
         {
             //if (cd == null) return;
             calibData = cd;
-            refreshModel();
+            RefreshModel();
         }
 
-        public void refreshModel()
+        public void RefreshModel()
         {
             MemberChanged("measuredLeft");
             MemberChanged("measuredRight");

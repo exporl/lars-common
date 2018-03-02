@@ -48,6 +48,7 @@ namespace Lars
         }
 
         protected bool isGameOver = false;
+        public bool isOver { get { return isGameOver; } }
 
         protected virtual void Awake()
         {
@@ -97,9 +98,9 @@ namespace Lars
                 StopAllCoroutines();
                 isGameOver = false;
 
-                calibManager.applyCalibration();
+                calibManager.ApplyCalibration();
 
-                applySettings();
+                ApplySettings();
 
                 StartCoroutine("_DoStart");
 
