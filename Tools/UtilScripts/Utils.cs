@@ -71,12 +71,6 @@ namespace Lars
             return false;
         }
 
-        public static Direction SwitchDirection(Direction dir)
-        {
-            int i = (int)dir * -1;
-            return (Direction)i;
-        }
-
         /// <summary>
         /// Clean the memory and reload the scene
         /// </summary>
