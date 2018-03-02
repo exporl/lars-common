@@ -9,7 +9,7 @@ using Visc;
 namespace Lars
 {
 
-    public class TutorialController : ManagerHelper
+    public abstract class TutorialController : ManagerHelper
     {
         public Image panel;
         public Text txt;
@@ -136,6 +136,10 @@ namespace Lars
                 yield return 0;
             }
         }
+
+        public abstract void Explain(string explanation, bool playSound, bool autoHide);
+
+        public abstract void HideExplain();
     }
 
     [System.Serializable]
