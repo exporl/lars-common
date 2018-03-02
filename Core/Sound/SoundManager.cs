@@ -142,12 +142,18 @@ namespace Lars.Sound
         #endregion
 
         public AudioSource speechPlayer;
+
         public void PlaySpeech(string speechName, float vol = 0)
         {
             AudioClip clip = soundLib.getSpeechClip(speechName);
             if (clip != null)
                 speechPlayer.PlayOneShot(clip);
         }
-        
+
+        public virtual void say(string s)
+        { }
+
+        public virtual void speech(string s)
+        { }
     }
 }

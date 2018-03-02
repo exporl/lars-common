@@ -21,35 +21,35 @@ namespace Visc
         [SerializeField]
         private float _vol = 1;
 
-        SpinSoundManager spinSound;
+        SoundManager sound;
 
         protected override void OnStart(float startTime)
         {
             _start = startTime;
             _type = ParseEnum<SoundType>(typeOptions[_typeSelect]);
 
-            spinSound = SpinSoundManager.instance as SpinSoundManager;
+            sound = SoundManager.instance as SoundManager;
 
-            if (string.IsNullOrEmpty(_clipName) || !spinSound) return;
+            if (string.IsNullOrEmpty(_clipName) || !sound) return;
            
             // Do type-specific action
             switch (_type)
             {
                 case SoundType.Effect:
 
-                    spinSound.PlaySoundEffect(_clipName);
+                    sound.PlaySoundEffect(_clipName);
 
                     break;
 
                 case SoundType.Speech:
 
-                    spinSound.speech("story_"+_clipName);
+                    sound.speech("story_"+_clipName);
 
                     break;
 
                 case SoundType.Digit:
                     // for saying single digits
-                    spinSound.say(_clipName);
+                    sound.say(_clipName);
 
                     break;
                     
