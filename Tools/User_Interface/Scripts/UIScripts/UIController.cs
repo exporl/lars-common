@@ -7,7 +7,6 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UI.Xml;
-using Lars.Tower;
 
 namespace Lars.UI
 {
