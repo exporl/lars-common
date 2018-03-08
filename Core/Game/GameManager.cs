@@ -137,6 +137,8 @@ namespace Lars
         /// </summary>
         protected abstract void ApplySettings();
 
+        public virtual void SetCam(Camera cam) { }
+
     }
 
 }
