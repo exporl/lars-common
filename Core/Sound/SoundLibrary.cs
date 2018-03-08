@@ -15,9 +15,10 @@ namespace Lars.Sound
         public List<SoundClip> soundFxList;
 
         /// <summary>
-        /// pseudo dict for sound effects
+        /// pseudo dict for multi-sound effects (MultiSoundClip)
+        /// MultiSoundClip returns random clip from list
         /// </summary>
-        public List<MultiSoundClip> soundEffectList;
+        public List<MultiSoundClip> multiSoundFxList;
 
         /// <summary>
         /// pseudo dict for digits
@@ -41,8 +42,11 @@ namespace Lars.Sound
 
         public AudioClip getFxClip(string clipName)
         {
-            if (!soundFxList.Exists(x => x.name == clipName)) return null;
-            return soundFxList.Find(x => x.name == clipName).clip;
+            if (!soundFxList.Exists(x => x.name == clipName) && !multiSoundFxList.Exists(x => x.name == clipName)) return null;
+            if (!soundFxList.Exists(x => x.name == clipName))
+                return multiSoundFxList.Find(x => x.name == clipName).clip;
+            else
+                return soundFxList.Find(x => x.name == clipName).clip;
         }
 
         public AudioClip getSpeechClip(string clipName)
@@ -51,6 +55,7 @@ namespace Lars.Sound
             return speechList.Find(x => x.name == clipName).clip;
         }
 
+        //cache for scaled soundclips (prevents same scale from being applied twice)
         List<ScaledSoundClip> scaledSpeechList = new List<ScaledSoundClip>();
         
         // single ear
