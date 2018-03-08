@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEditor;
 #endif
 using DG.Tweening;
+using System.Xml.Serialization;
 
 namespace Visc
 {
-	public abstract class EventAction : ScriptableObject
+    public abstract class EventAction : ScriptableObject
 	{
 		public const string ActionName = "Generic event action";
 
@@ -40,7 +41,7 @@ namespace Visc
         [SerializeField]
         protected int _typeSelect;
         [SerializeField]
-        protected int typeSelect
+        public int typeSelect
         {
             get
             {
@@ -56,7 +57,7 @@ namespace Visc
         protected Ease easer;
         protected string[] easingOptions = System.Enum.GetNames(typeof(Ease));
         [SerializeField]
-        protected int _easingMode = 1; //linear
+        public int _easingMode = 1; //linear
 
         public void ActionStart(float starTime)
 		{
