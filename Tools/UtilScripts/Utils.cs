@@ -165,18 +165,18 @@ namespace Lars
         /// <typeparam name="T"></typeparam>
         /// <param name="objectToSave"></param>
         /// <param name="filePath"></param>
-        public static void saveToXml<T>(T objectToSave, string filePath)
+        public static void saveToXml<T>(T objectToSave, string filePath, bool editor = false)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
             //var fname = Path.Combine(Application.persistentDataPath, filePath);
 
-            string fname = Application.persistentDataPath + filePath;
+            string fname = editor? Application.dataPath + filePath : Application.persistentDataPath + filePath;
 
             //  Ensure directory existence
             Directory.CreateDirectory(Path.GetDirectoryName(fname));
 
-            //Debug.Log("SAVED TO: " + fname);
+            Debug.Log("SAVED TO: " + fname);
             var encoding = Encoding.GetEncoding("UTF-8");
 
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
@@ -188,13 +188,16 @@ namespace Lars
             }
         }
         
-        public static T loadFromXml<T>(string filePath, Action callback) where T : class, new()
+        public static T loadFromXml<T>(string filePath, Action callback, bool editor = false) where T : class, new()
         {
             //var fname = Path.Combine(Application.persistentDataPath, filePath);
-            string fname = Application.persistentDataPath + filePath;
+            //string fname = Application.persistentDataPath + filePath;
+            string fname = editor ? Application.dataPath + filePath : Application.persistentDataPath + filePath;
 
             if (!File.Exists(fname))
                 return null;
+
+            Debug.Log("LOADED FROM: " + fname);
 
             object result;
 
@@ -208,7 +211,7 @@ namespace Lars
             }
             catch (System.Exception e)
             {
-                Debug.Log("could not load xml profiles file: " + e.ToString());
+                Debug.Log("could not load xml file: " + e.ToString());
                 return null;
             }
 
