@@ -94,9 +94,6 @@ namespace Lars.UI
         protected GameObject userProfileAdd;
         [SerializeField]
         protected Text userNameInput;
-        //[SerializeField]
-        //Text userFamNameInput;
-        
 
         public void SetProfileName(string s)
         {
