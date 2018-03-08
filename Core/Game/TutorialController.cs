@@ -46,7 +46,8 @@ namespace Lars
 
         public void setCallback(string key, Action cb)
         {
-            callbacks.Add(key, cb);
+            if(!callbacks.ContainsKey(key))
+                callbacks.Add(key, cb);
         }
 
         [EditorButton]

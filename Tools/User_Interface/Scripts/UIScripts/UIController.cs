@@ -104,8 +104,9 @@ namespace Lars.UI
         { }
 
         [EditorButton]
-        public void ShowProfileGrid()
+        public virtual void ShowProfileGrid()
         {
+            /*
             profileGrid.gameObject.SetActive(true);
 
             Utils.DestroyChildren(profileGrid.transform);
@@ -124,7 +125,7 @@ namespace Lars.UI
             });
 
             // Add existing profiles
-            foreach (UserProfile p in userProfiles.users.list)
+            foreach (UserProfile<System.Object> p in userProfiles.users.list)
             {
                 GameObject prof = Instantiate(profileTemplate) as GameObject;
                 prof.transform.SetParent(profileGrid.transform);
@@ -137,6 +138,7 @@ namespace Lars.UI
                     HideProfileGrid();
                 });
             }
+            */
         }
 
         [EditorButton]
@@ -166,10 +168,6 @@ namespace Lars.UI
         GameObject exitBtn;
         [SerializeField]
         GameObject pauseOverlay;
-
-        //public BonusLayoutController bonusOverlayCtrl;
-        //public SnapFeedbackController snapFeedbackCtrl;
-
 
         public void HidePauseBtn()
         {

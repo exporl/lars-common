@@ -28,7 +28,7 @@ namespace Visc
 
             string xmlSourcePath = AssetDatabase.GetAssetPath(xmlFile).Replace("Assets", "");
 
-            ScenarioData sd = Lars.Utils.loadFromXml<ScenarioData>(xmlSourcePath, null, true);
+            ScenarioData sd = Lars.Utils.LoadFromXml<ScenarioData>(xmlSourcePath, null, true);
 
             scen.MaximumDuration = sd.MaximumDuration;
             scen.MaximumTracks = sd.MaximumTracks;
@@ -91,6 +91,24 @@ namespace Visc
                                 }
                         }
                     }
+                    /*
+                    else if(ad.TypeName == "Visc.TrafficLightEvent") {
+                        switch(eas.fieldName) {
+                        case "_show": {
+                                typeof(TrafficLightEvent).GetField(eas.fieldName, BindingFlags.NonPublic | BindingFlags.Instance).SetValue(a,Convert.ToBoolean( eas.fieldVal as string ));
+                                break;
+                            }
+                        case "_tutorial": {
+                                typeof(TrafficLightEvent).GetField(eas.fieldName, BindingFlags.NonPublic | BindingFlags.Instance).SetValue(a, GameObject.Find(eas.fieldVal).GetComponent<TutorialController>());
+                                break;
+                            }
+                        default: {
+                                Debug.LogError("Unknown fieldname in actionSpecifics");
+                                break;
+                            }
+                        }
+                    }
+                    */
                     else if (ad.TypeName == "Visc.CamAnimEvent")
                     {
                         switch (eas.fieldName)
@@ -163,6 +181,7 @@ namespace Visc
                                 */
                         }
                     }
+                    /*
                     if (ad.TypeName == "Visc.SimpleAnimEvent")
                     {
                         switch (eas.fieldName)
@@ -184,6 +203,7 @@ namespace Visc
                                 }
                         }
                     }
+                    */
                     else if (ad.TypeName == "Visc.DOTransformAnimEvent")
                     {
                         switch (eas.fieldName)

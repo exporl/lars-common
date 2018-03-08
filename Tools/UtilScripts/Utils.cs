@@ -165,7 +165,7 @@ namespace Lars
         /// <typeparam name="T"></typeparam>
         /// <param name="objectToSave"></param>
         /// <param name="filePath"></param>
-        public static void saveToXml<T>(T objectToSave, string filePath, bool editor = false)
+        public static void SaveToXml<T>(T objectToSave, string filePath, bool editor = false)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
 
@@ -188,7 +188,7 @@ namespace Lars
             }
         }
         
-        public static T loadFromXml<T>(string filePath, Action callback, bool editor = false) where T : class, new()
+        public static T LoadFromXml<T>(string filePath, Action callback, bool editor = false) where T : class, new()
         {
             //var fname = Path.Combine(Application.persistentDataPath, filePath);
             //string fname = Application.persistentDataPath + filePath;

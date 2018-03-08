@@ -25,8 +25,9 @@ namespace Visc
         private bool _autoHide;
 
 		protected override void OnStart(float startTime)
-        { 
-            string filtered = _explanation.Replace("%name%", Lars.UserProfileManager.instance.ActiveUser.name);
+        {
+            string filtered = _explanation.Replace("%name%", 
+                GlobalManager.instance.userProfiles.ActiveUser.name);
             _tutorial.Explain(filtered, _playSound, _autoHide);
         }
 

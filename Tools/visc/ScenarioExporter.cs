@@ -210,6 +210,7 @@ namespace Visc
 
                             break;
                         }
+                    /*
                     case "Visc.SimpleAnimEvent":
                         {
                             //string _animName
@@ -230,6 +231,7 @@ namespace Visc
 
                             break;
                         }
+                        */
                     case "Visc.DOTransformAnimEvent":
                         {
                             //Transform 
@@ -457,9 +459,9 @@ namespace Visc
             }
 
             if(overrideFilename == null || overrideFilename == "")
-                Lars.Utils.saveToXml<ScenarioData>(scenData, "/" + scen.name + ".xml", true);
+                Lars.Utils.SaveToXml<ScenarioData>(scenData, "/" + scen.name + ".xml", true);
             else
-                Lars.Utils.saveToXml<ScenarioData>(scenData, "/" + overrideFilename.Replace(".xml","") + ".xml", true);
+                Lars.Utils.SaveToXml<ScenarioData>(scenData, "/" + overrideFilename.Replace(".xml","") + ".xml", true);
         }
     }
 
