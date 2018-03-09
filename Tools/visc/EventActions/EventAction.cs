@@ -61,7 +61,7 @@ namespace Visc
 
         public void ActionStart(float starTime)
 		{
-			Debug.Log("[EventSystem] Started event " + _description);
+			//Debug.Log("[EventSystem] Started event " + _description);
 			NowPlaying = true;
 			OnStart(starTime);
 		}
@@ -70,7 +70,7 @@ namespace Visc
 
 		public void Stop()
 		{
-			Debug.Log("[EventSystem] Finished event " + _description);
+			//Debug.Log("[EventSystem] Finished event " + _description);
 			NowPlaying = false;
 			OnStop();
 		}
