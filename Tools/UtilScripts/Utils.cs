@@ -221,6 +221,42 @@ namespace Lars
             return (T)result;
         }
 
+        /// <summary>
+        /// Returns all objects of a given type in the scene, regardless of 
+        /// whether the objects they are attached to are active or not.
+        /// </summary>
+        public static List<T> GetAllObjectsOfType<T>() {
+            GameObject[] roots = UnityEngine.SceneManagement.SceneManager.
+                GetActiveScene().GetRootGameObjects();
+            List<T> toReturn = new List<T>();
+
+            for(int i = 0; i < roots.Length; i++) {
+                List<T> nextList = new List<T>();
+                roots[i].GetComponentsInChildren(true, nextList);
+                toReturn.AddRange(nextList);
+            }
+
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Returns first object of a given type in the scene, regardless of 
+        /// whether it is active or not.
+        /// </summary>
+        public static T GetAnyObjectOfType<T>() {
+            GameObject[] roots = UnityEngine.SceneManagement.SceneManager.
+                GetActiveScene().GetRootGameObjects();
+   
+            for(int i = 0; i < roots.Length; i++) {
+                List<T> nextList = new List<T>();
+                T t = roots[i].GetComponentInChildren<T>(true);
+                if(t != null)
+                    return t;
+            }
+
+            return default(T);
+        }
+
         #endregion
     }
 }
