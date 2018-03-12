@@ -194,6 +194,8 @@ namespace Lars
             //string fname = Application.persistentDataPath + filePath;
             string fname = editor ? Application.dataPath + filePath : Application.persistentDataPath + filePath;
 
+            Debug.Log(fname);
+
             if (!File.Exists(fname))
                 return null;
 
