@@ -141,7 +141,7 @@ namespace Lars.Sound
         /// <summary>
         /// Pass values to SoundManager
         /// </summary>
-        public void ApplyCalibration()
+        public virtual void ApplyCalibration()
         {
             if (!dataLoaded) LoadData();
 
@@ -156,8 +156,6 @@ namespace Lars.Sound
 
             soundManager.SetCalibration(GetCalibrationDiff(Channel.Left), Channel.Left);
             soundManager.SetCalibration(GetCalibrationDiff(Channel.Right), Channel.Right);
-
-            //soundManager.PrepareNoise();
         }
 
         /// <summary>
