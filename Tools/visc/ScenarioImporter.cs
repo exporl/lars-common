@@ -6,14 +6,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
-using UnityEditor;
 using Lars;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Visc
 {
     [RequireComponent(typeof(Scenario))]
     public class ScenarioImporter : MonoBehaviour {
+
+        #if UNITY_EDITOR
 
         Scenario scen;
 
@@ -391,6 +396,8 @@ namespace Visc
 
         }
 
+        #endif
+
         //TODO move to utils
         public static Vector3 StringToVector3(string sVector)
         {
@@ -411,6 +418,8 @@ namespace Visc
 
             return result;
         }
+
+        
     }
 
 }
