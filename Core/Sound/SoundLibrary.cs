@@ -105,10 +105,11 @@ namespace Lars.Sound
             return voiceList.Find(x => x.name == clipName).clip;
         }
 
+        /*
         AudioClip loadAudioClip(string name)
         {
             return new AudioClip();
-        }
+        }*/
     }
 
     public static class AudioClipExtensions
@@ -261,7 +262,7 @@ namespace Lars.Sound
                 {
                     return clips[Random.Range(0, clips.Length)];
                 }
-                return new AudioClip();
+                return null;
             }
         }
     }
