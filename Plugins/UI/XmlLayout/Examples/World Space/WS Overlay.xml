@@ -1,0 +1,10 @@
+<XmlLayout xmlns="http://www.w3schools.com"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="../../Configuration/XmlLayout.xsd">
+
+  <Text rectAlignment="LowerCenter" color="white" height="36" offsetXY="64 0">
+    Hold down the 'alt' key or the right mouse button to move the camera.
+    Use WASD or the arrow keys to move.
+  </Text>
+  
+</XmlLayout>

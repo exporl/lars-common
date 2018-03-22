@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a952b127d3da39d4da5fd455042d0d14, type: 3}
+  m_Name: resourceDatabase
+  m_EditorClassIdentifier: 
+  entries:
+  - path: Animation/FadeIn
+    resource: {fileID: 7400000, guid: 5dd6b91ca58f0a84aa883e361771c2e7, type: 2}
+  - path: Animation/FadeOut
+    resource: {fileID: 7400000, guid: f2689dd4ecc218e44aebb6aad7670e98, type: 2}
+  - path: Animation/Shrink
+    resource: {fileID: 7400000, guid: 02f01da928a810548a221525c9137ca8, type: 2}
+  - path: Animation/Shrink_Horizontal
+    resource: {fileID: 7400000, guid: 178985705b41cf84fbd289372c1aeb14, type: 2}
+  - path: Animation/Shrink_Vertical
+    resource: {fileID: 7400000, guid: 7a98d3fa1d90e9047ab9594263023fe8, type: 2}
+  - path: Animation/SlideIn_Left
+    resource: {fileID: 7400000, guid: a1fa32b1afb362844897299b7a0f3437, type: 2}
+  - path: Animation/SlideIn_Top
+    resource: {fileID: 7400000, guid: ca6d76ce1866db14a9b0600c79b7e02c, type: 2}
+  - path: Animation/SlideOut_Bottom
+    resource: {fileID: 7400000, guid: 0ae32b877854d6346abe440eebb320da, type: 2}
+  - path: Animation/SlideOut_Right
+    resource: {fileID: 7400000, guid: 3fd038a8db8f02246b50a68bbb66ad1c, type: 2}
+  - path: Animation/XmlLayoutAnimationController
+    resource: {fileID: 9100000, guid: 4ea4c44e288b43242b205b28ca7ac857, type: 2}
+  - path: Fonts/Arial
+    resource: {fileID: 12800000, guid: 38596dd7edd19ff478b6ae4cb5eba580, type: 3}
+  - path: Fonts/Arial Bold
+    resource: {fileID: 12800000, guid: cc734ab6de70ef942bba6eaa5f00f6a6, type: 3}
+  - path: Fonts/Arial Italic
+    resource: {fileID: 12800000, guid: dfdce9ec4e550564da066f59e0987b60, type: 3}
+  - path: Fonts/Courier New
+    resource: {fileID: 12800000, guid: 47730109db0146c42951211ab68ebb60, type: 3}
+  - path: Fonts/Courier New Bold
+    resource: {fileID: 12800000, guid: d7acad710d1b0734baef8682cd9c56ab, type: 3}
+  - path: Localization/Afrikaans
+    resource: {fileID: 11400000, guid: d513be784ae732b4496dc4b09200a321, type: 2}
+  - path: Localization/English
+    resource: {fileID: 11400000, guid: 12e658fc3f17fc740bba231a23271e7f, type: 2}
+  - path: Localization/French
+    resource: {fileID: 11400000, guid: cb31bcaba893bac4abdd0537c900f1f0, type: 2}
+  - path: Localization/Spanish
+    resource: {fileID: 11400000, guid: 88eee86500fc9414d90eec084bfbc462, type: 2}
+  - path: Prefabs/TableLayout/Cell
+    resource: {fileID: 171100, guid: ce40bf8f12f94a744b07e8cfd9bff1df, type: 2}
+  - path: Prefabs/TableLayout/Row
+    resource: {fileID: 144882, guid: 2c18ba788d89ff94aa8321e22a650bc6, type: 2}
+  - path: Prefabs/TableLayout/TableLayout
+    resource: {fileID: 131506, guid: ea5245aa60bf15442aba456edf851d2b, type: 2}
+  - path: ResourceData/resourceDatabase
+    resource: {fileID: 11400000}
+  - path: Sprites/Elements/Background_XmlLayout
+    resource: {fileID: 21300000, guid: a94b690bb7d7dbc4ebf724dd31b03707, type: 3}
+  - path: Sprites/Elements/Checkmark
+    resource: {fileID: 21300000, guid: a6f745c6eaad01c4aaae9023b6ec4dbc, type: 3}
+  - path: Sprites/Elements/DropdownArrow
+    resource: {fileID: 21300000, guid: 396ab7edde9be4e409776d4030b2bbbb, type: 3}
+  - path: Sprites/Elements/ToggleGroup_Background
+    resource: {fileID: 21300000, guid: cd5d58ad5b343a34ea55aed36bb3af86, type: 3}
+  - path: Sprites/Elements/ToggleGroup_Selected
+    resource: {fileID: 21300000, guid: 717bb066a1fb9f54ca57ca671cc69837, type: 3}
+  - path: Sprites/Elements/UISprite_XmlLayout
+    resource: {fileID: 21300000, guid: 1a6c660fb2af0874294b55605aabd8b8, type: 3}
+  - path: Sprites/Outline
+    resource: {fileID: 21300000, guid: 6855878fb857eb9408b3d9ceeab8908b, type: 3}
+  - path: Sprites/Outline_Sharp
+    resource: {fileID: 21300000, guid: c88737c4d8c610c43a1be895c06d380c, type: 3}
+  - path: Sprites/Outline_With_Background
+    resource: {fileID: 21300000, guid: 55d36aa4af06b4b4988c2afc77a95fd1, type: 3}
+  - path: XmlLayout Prefabs/Button
+    resource: {fileID: 140746, guid: 042770d0e18670c48921efe1c27859ff, type: 2}
+  - path: XmlLayout Prefabs/DataTable
+    resource: {fileID: 1000010005726018, guid: 7c2f75f51dc491044a16cf5c3f1ca1b0, type: 2}
+  - path: XmlLayout Prefabs/Dropdown
+    resource: {fileID: 196936, guid: 921ee0b176cfecf488d3901bb95f8bcf, type: 2}
+  - path: XmlLayout Prefabs/GridLayout
+    resource: {fileID: 183498, guid: db0e91cbe6c19634cad8f7d39ad6f712, type: 2}
+  - path: XmlLayout Prefabs/HorizontalLayout
+    resource: {fileID: 102828, guid: 621f4610248b6424b84e64f2bf91df95, type: 2}
+  - path: XmlLayout Prefabs/HorizontalScrollView
+    resource: {fileID: 109680, guid: 54313bea214463c408368f79e14b152a, type: 2}
+  - path: XmlLayout Prefabs/Image
+    resource: {fileID: 155822, guid: 41b150cb70f55814caccb75660c187aa, type: 2}
+  - path: XmlLayout Prefabs/InputField
+    resource: {fileID: 140704, guid: 07835e1c32e605c4c8da7eefb618d0c8, type: 2}
+  - path: XmlLayout Prefabs/Mask
+    resource: {fileID: 142864, guid: 27ff85ce7b910f54286abe6cb8077380, type: 2}
+  - path: XmlLayout Prefabs/PagedRect/Page
+    resource: {fileID: 194996, guid: bcd584b859a7ba14cbfc5d3408e9b8db, type: 2}
+  - path: XmlLayout Prefabs/Panel
+    resource: {fileID: 142900, guid: 7b69bf110d3234548a2c9d89cd0e8d21, type: 2}
+  - path: XmlLayout Prefabs/Slider
+    resource: {fileID: 199954, guid: 7b3098f68358c55438bb9360c9c54798, type: 2}
+  - path: XmlLayout Prefabs/TableLayout/Note
+    resource: {fileID: 4900000, guid: ab211d7aaa68ca44189207e7055d68de, type: 3}
+  - path: XmlLayout Prefabs/Text
+    resource: {fileID: 129944, guid: 537f8ec32b5bf6540a9f87fde809b4d5, type: 2}
+  - path: XmlLayout Prefabs/Toggle
+    resource: {fileID: 131396, guid: f6e8df406bee8564ebc5daf0755ce670, type: 2}
+  - path: XmlLayout Prefabs/ToggleButton
+    resource: {fileID: 178968, guid: 0b9bdbd097c6c244caf4bfc360f0b668, type: 2}
+  - path: XmlLayout Prefabs/ToggleGroup
+    resource: {fileID: 108850, guid: 23bd1a8437068064e9f281fffb332808, type: 2}
+  - path: XmlLayout Prefabs/Tooltip
+    resource: {fileID: 190334, guid: c54784c9920b5ef40ad5c94b280dfbae, type: 2}
+  - path: XmlLayout Prefabs/VerticalLayout
+    resource: {fileID: 107640, guid: bbac41adeb9433b439ae01aecc28f07c, type: 2}
+  - path: XmlLayout Prefabs/VerticalScrollView
+    resource: {fileID: 197048, guid: 3a9babe54b4013f41b1ebc59e032aa27, type: 2}
+  - path: XmlLayout Prefabs/XmlLayout
+    resource: {fileID: 163814, guid: 0047bc8aed5f77041b82920592c9cd6c, type: 2}
+  - path: XmlLayout_Configuration
+    resource: {fileID: 11400000, guid: 78d64731951661341bfd4e9f45238495, type: 2}
+  - path: UISprite
+    resource: {fileID: 21300000, guid: 1a6c660fb2af0874294b55605aabd8b8, type: 3}
+  - path: Background
+    resource: {fileID: 21300000, guid: a94b690bb7d7dbc4ebf724dd31b03707, type: 3}
+  - path: InputFieldBackground
+    resource: {fileID: 21300000, guid: 1a6c660fb2af0874294b55605aabd8b8, type: 3}
+  customResourceDatabases:
+  - {fileID: 11400000, guid: 2bd2776fbe7b0b144b8d9c84aeb4a722, type: 2}
+  - {fileID: 11400000, guid: d7441918447714a4e8ff74df5663cf05, type: 2}
+  - {fileID: 11400000, guid: 5d65ba1e680b3064ca8c4980e6aea116, type: 2}
+  - {fileID: 11400000, guid: 091b92109681d4647a93339ad26c4dee, type: 2}
