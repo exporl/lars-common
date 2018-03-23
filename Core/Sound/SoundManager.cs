@@ -134,6 +134,8 @@ namespace Lars.Sound
 
         public void PlaySoundEffect(string clipName, float vol = 0)
         {
+            if (speechPlayer.isPlaying) return;
+
             AudioClip clip = soundLib.getFxClip(clipName);
             if(clip != null)
                 soundEffectPlayer.PlayOneShot(clip);
@@ -147,7 +149,11 @@ namespace Lars.Sound
         {
             AudioClip clip = soundLib.getSpeechClip(speechName);
             if (clip != null)
-                speechPlayer.PlayOneShot(clip);
+            {
+                speechPlayer.clip = clip;
+                speechPlayer.Play();
+                //speechPlayer.PlayOneShot(clip);
+            }
         }
 
         public virtual void say(string s)
