@@ -10,6 +10,8 @@ public class ThresholdNUp1Down : ThresholdAdaptiveProcedure
     //dynamic variables
     int consecutiveSuccesses;
     float currentThreshold;
+    int direction;
+    int nbReversals;
 
     /// <param name="n">number of successes needed to step up</param>
     /// <param name="stepUp">value smaller than one, to increase difficulty</param>
@@ -22,6 +24,8 @@ public class ThresholdNUp1Down : ThresholdAdaptiveProcedure
         this.stepDown = stepDown;
         this.currentThreshold = startingThreshold;
         this.maximum = maximum;
+
+        this.nbReversals = -1;
     }
 
     public override float GetThreshold() {
@@ -35,14 +39,40 @@ public class ThresholdNUp1Down : ThresholdAdaptiveProcedure
             if(consecutiveSuccesses >= successesUntilStepUp) {
                 consecutiveSuccesses = 0;
                 currentThreshold *= stepUp;
+                SetIncreasing(false);
             }
         }
         else {
             consecutiveSuccesses = 0;
             currentThreshold *= stepDown;
+            SetIncreasing(true);
         }
         currentThreshold = Mathf.Clamp(currentThreshold, 0f, maximum);
     }
 
+    private void SetIncreasing(bool value) {
+        if(value && direction < 1) { 
+            direction = 1;
+            nbReversals++;
+        }
+        if(!value && direction > -1) {
+            direction = -1;
+            nbReversals++;
+        }
+    }
+
+    public int GetNbReversals() {
+        return nbReversals;
+    }
+
+    /// <summary>
+    /// Manually change threshold value and reset procedure parameters
+    /// </summary>
+    public void SetThreshold(float value) {
+        currentThreshold = value;
+        nbReversals = -1;
+        consecutiveSuccesses = 0;
+        direction = 0;
+    }
  
 }
