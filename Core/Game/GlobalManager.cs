@@ -19,7 +19,7 @@ namespace Lars
 
         public string[] sceneList;
 
-        void Awake()
+        protected virtual void Awake()
         {
             if (Time.timeSinceLevelLoad < 1)
                 DOTween.Init();

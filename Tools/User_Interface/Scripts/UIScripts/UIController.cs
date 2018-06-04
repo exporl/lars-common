@@ -38,6 +38,7 @@ namespace Lars.UI
 
             DesactivateUIFitter();
             self = this;
+            SceneManager.sceneLoaded += InitializeScene;
         }
 
         void OnEnable()
@@ -58,11 +59,11 @@ namespace Lars.UI
             profNamePanel.transform.DOScale(new Vector3(1, 1, 1), 1f).SetEase(Ease.OutBounce);
         }
 
-        void OnLevelWasLoaded(int l)
+        private void InitializeScene(Scene scene, LoadSceneMode mode)
         {
-            onlyShowCurrentScene(l);
+            onlyShowCurrentScene(scene.buildIndex);
 
-            if (l != 0)
+            if (scene.buildIndex != 0)
                 HideWarning();
         }
 
