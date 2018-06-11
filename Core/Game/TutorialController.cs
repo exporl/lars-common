@@ -70,7 +70,7 @@ namespace Lars
         }
 
         [EditorButton]
-        public void StartTutorial(string name, Action callback)
+        public virtual void StartTutorial(string name, Action callback)
         {
             if (currentScenario == null) return;
 
