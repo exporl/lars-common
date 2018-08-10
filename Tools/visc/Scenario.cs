@@ -114,12 +114,9 @@ namespace Visc
 
         private IEnumerator ExecuteScenario()
 		{
-
-            Debug.Log("[EventSystem] Started execution of " + gameObject.name);
 			_time = 0f;
 
 			var totalDuration = _actions.Any () ? _actions.Max (action => action.EndTime) : 0f;
-			Debug.Log ("[EventSystem] Scenario total duration " + totalDuration);
 
 			var isPlaying = true;
 

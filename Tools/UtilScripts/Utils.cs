@@ -176,7 +176,6 @@ namespace Lars
             //  Ensure directory existence
             Directory.CreateDirectory(Path.GetDirectoryName(fname));
 
-            Debug.Log("SAVED TO: " + fname);
             var encoding = Encoding.GetEncoding("UTF-8");
 
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
@@ -194,12 +193,8 @@ namespace Lars
             //string fname = Application.persistentDataPath + filePath;
             string fname = editor ? Application.dataPath + filePath : Application.persistentDataPath + filePath;
 
-            Debug.Log(fname);
-
             if (!File.Exists(fname))
                 return null;
-
-            Debug.Log("LOADED FROM: " + fname);
 
             object result;
 
@@ -213,7 +208,7 @@ namespace Lars
             }
             catch (System.Exception e)
             {
-                Debug.Log("could not load xml file: " + e.ToString());
+                Debug.LogError("could not load xml file: " + e.ToString());
                 return null;
             }
 
