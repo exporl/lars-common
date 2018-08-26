@@ -221,7 +221,7 @@ namespace Lars.Sound
             }
             catch (System.Exception e)
             {
-                Debug.LogError("Could not Load XML due to error: " + e.ToString());
+                Debug.Log("Could not Load XML due to error: " + e.ToString());
                 return false;
             }
         }
